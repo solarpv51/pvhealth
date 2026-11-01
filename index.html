@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17324D">
+<title>Solar Panel AI Health Monitoring System | SCADA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f2;--panel:#ffffff;--panel2:#f8f9f5;--line:#d9dfd2;--text:#1d2b24;--muted:#68766b;--green:#247a43;--cyan:#286a87;--amber:#a47b16;--red:#b43b3b;--violet:#62558c;--shadow:0 8px 24px #20351b12}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#eef2e8 0,#f8f9f6 230px,var(--bg) 100%);color:var(--text);font-family:Manrope,Arial,sans-serif}
+.wrap{max-width:1500px;margin:auto;padding:24px 28px 42px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:20px}.brand{display:flex;gap:13px;align-items:center}.logo{width:76px;height:76px;object-fit:contain;border-radius:10px;background:#fff;padding:3px;border:1px solid #e2e5d9;box-shadow:0 4px 14px #20351b12}h1{font-size:19px;letter-spacing:.025em;margin:0;font-weight:800;color:#17324d}.subtitle{font-size:10px;color:#65744f;letter-spacing:.08em;margin-top:5px;font-weight:700}.top-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.chip,.btn{border:1px solid var(--line);background:#fff;color:var(--text);border-radius:99px;padding:9px 12px;font-size:10px;font-weight:800;letter-spacing:.06em}.chip{display:flex;align-items:center;gap:8px}.led{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px currentColor}.btn{cursor:pointer}.btn:hover{border-color:var(--cyan)}
+.hero{display:grid;grid-template-columns:1.45fr .8fr;gap:13px;margin-bottom:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);min-width:0}.hero-main{padding:21px 23px;display:flex;align-items:center;justify-content:space-between;min-height:138px;overflow:hidden;position:relative;background:linear-gradient(110deg,#fff 0%,#f1f4e9 100%)}.eyebrow{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.16em;text-transform:uppercase}.hero-main h2{font-size:25px;margin:8px 0 6px}.hero-main p{font-size:11px;color:var(--muted);margin:0;line-height:1.7;max-width:660px}.sun-disc{font-size:60px;padding:0 24px;filter:drop-shadow(0 0 20px #f7c65a55)}.hero-status{padding:20px 22px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:#fff}.statusline{display:flex;justify-content:space-between;gap:10px;font-size:11px}.muted{color:var(--muted)}.good{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--red)}
+.section{margin:23px 1px 11px;display:flex;align-items:end;justify-content:space-between;gap:10px}.section h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0}.section span{font-size:9px;color:var(--muted)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.metric{padding:15px 17px;min-height:113px;position:relative;overflow:hidden}.metric:after{content:"";position:absolute;width:75px;height:75px;right:-20px;top:-25px;border-radius:50%;background:var(--accent);opacity:.08}.metric-head{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:space-between}.metric-icon{color:var(--accent);font-size:15px}.metric-value{font-family:"DM Mono",monospace;font-size:25px;margin:13px 0 3px;letter-spacing:-.04em}.unit{font-size:11px;color:var(--muted);margin-left:4px}.metric-foot{font-size:9px;color:var(--muted)}
+.scada{padding:17px 18px;background:#fff}.scada-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:14px}.scada-head h4{font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin:0}.scada-head small{color:var(--muted);font-size:9px}
+.flow{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr;align-items:center;gap:4px}.node{min-height:118px;background:#fbfcf8;border:1px solid #d8dfd0;border-radius:13px;padding:12px 9px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}.node-icon{font-size:27px}.node strong{font-size:10px;letter-spacing:.06em}.node small{font-size:9px;color:var(--muted);line-height:1.45}.node .reading{font:12px "DM Mono",monospace;color:var(--green)}.arrow{font-size:23px;color:var(--green);text-align:center}.branch{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.branch-node{background:#fbfcf8;border:1px dashed #aab69f;border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px}.branch-node .node-icon{font-size:23px}.branch-node strong{font-size:10px}.branch-node small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}.embed-card{padding:14px;min-width:0}.embed-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.embed-title h4{font-size:10px;letter-spacing:.09em;text-transform:uppercase;margin:0}.embed-title span{font-size:9px;color:var(--muted)}.embed-frame{width:100%;height:285px;border:1px solid #d5ddd1;border-radius:9px;background:#fff;display:block}.widget-frame{height:260px}.matlab-frame{height:320px}.note{font-size:9px;color:var(--muted);line-height:1.65;margin-top:9px}
+.chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:9px;margin-top:23px;padding-top:14px;border-top:1px solid var(--line)}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+@media(max-width:950px){.metrics{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.flow{grid-template-columns:1fr 22px 1fr;row-gap:9px}.flow .node:nth-of-type(3){grid-column:1}.flow .arrow:nth-of-type(4){grid-column:2}.flow .node:nth-of-type(5){grid-column:3}.flow .arrow:nth-of-type(6){display:none}.flow .node:nth-of-type(7){grid-column:1 / 4}.grid2,.chart-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.wrap{padding:15px 11px 30px}.topbar{align-items:flex-start;flex-direction:column}.top-actions{width:100%;justify-content:space-between}.brand h1{font-size:15px}.hero-main h2{font-size:21px}.sun-disc{font-size:42px;padding:0 5px}.metrics{gap:8px}.metric{padding:12px;min-height:105px}.metric-value{font-size:21px}.flow{grid-template-columns:1fr;gap:7px}.flow .node,.flow .node:nth-of-type(3),.flow .node:nth-of-type(5),.flow .node:nth-of-type(7){grid-column:1}.flow .arrow{transform:rotate(90deg);line-height:16px}.flow .arrow:nth-of-type(4),.flow .arrow:nth-of-type(6){display:block;grid-column:1}.branch{grid-template-columns:1fr}.embed-frame{height:260px}.matlab-frame{height:290px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+ <div class="brand"><img class="logo" src="assets/college-logo.jpg" alt="Yeshwantrao Chavan College of Engineering logo"><div><h1>SOLAR PANEL AI HEALTH MONITORING SYSTEM</h1><div class="subtitle">YESHWANTRAO CHAVAN COLLEGE OF ENGINEERING · NAGPUR</div></div></div>
+ <div class="top-actions"><a class="btn" href="ai-analysis.html">✦ AI HEALTH ANALYSIS</a><div class="chip"><i class="led" id="led"></i><span id="connection">CONNECTING TO THINGSPEAK</span></div><div class="chip">CHANNEL 3500819</div><button class="btn" id="refresh">↻ REFRESH DATA</button></div>
+</header>
+
+<section class="hero">
+ <div class="panel hero-main"><div><div class="eyebrow">RENEWABLE ENERGY MONITORING</div><h2>Solar power monitoring</h2><p>Real-time electrical and environmental measurements with performance analytics and AI-assisted voltage assessment.</p></div><div class="sun-disc">☀</div></div>
+ <div class="panel hero-status">
+  <div class="statusline"><span class="eyebrow">DATA LINK</span><b class="warn" id="linkStatus">CHECKING</b></div>
+  <div class="statusline"><span class="muted">Latest sensor update</span><b id="lastUpdate">—</b></div>
+  <div class="statusline"><span class="muted">Records loaded</span><b id="recordCount">—</b></div>
+  <div class="statusline"><span class="muted">Auto refresh</span><b>60 seconds</b></div>
+  <div class="note" id="dataMessage">Connecting to public ThingSpeak feed…</div>
+ </div>
+</section>
+
+<div class="section"><h3>Live electrical & environmental values</h3><span>Latest values from ThingSpeak Fields 1–8</span></div>
+<section class="metrics">
+ <div class="panel metric" style="--accent:#55c9f2"><div class="metric-head">Panel voltage <b class="metric-icon">ϟ</b></div><div class="metric-value" id="v">—<span class="unit">V DC</span></div><div class="metric-foot">Field 1 · Panel terminals</div></div>
+ <div class="panel metric" style="--accent:#3fe0a3"><div class="metric-head">Current <b class="metric-icon">↯</b></div><div class="metric-value" id="i">—<span class="unit">A</span></div><div class="metric-foot">Field 2 · Charging current sensor</div></div>
+ <div class="panel metric" style="--accent:#f5c45e"><div class="metric-head">Power <b class="metric-icon">▰</b></div><div class="metric-value" id="p">—<span class="unit">W</span></div><div class="metric-foot">Field 4 · Reported power</div></div>
+ <div class="panel metric" style="--accent:#ae9bff"><div class="metric-head">Energy <b class="metric-icon">◷</b></div><div class="metric-value" id="e">—<span class="unit">as configured</span></div><div class="metric-foot">Field 3 · Confirm Wh / kWh</div></div>
+ <div class="panel metric" style="--accent:#f5c45e"><div class="metric-head">Light intensity <b class="metric-icon">☼</b></div><div class="metric-value" id="l">—<span class="unit">lux</span></div><div class="metric-foot">Field 7 · Light sensor</div></div>
+ <div class="panel metric" style="--accent:#ff9c73"><div class="metric-head">Panel temperature <b class="metric-icon">♨</b></div><div class="metric-value" id="st">—<span class="unit">°C</span></div><div class="metric-foot">Field 5 · Solar panel sensor</div></div>
+ <div class="panel metric" style="--accent:#55c9f2"><div class="metric-head">Atmospheric temperature <b class="metric-icon">⌁</b></div><div class="metric-value" id="at">—<span class="unit">°C</span></div><div class="metric-foot">Field 6 · Last valid DHT11 reading · <span id="atStamp">—</span></div></div>
+ <div class="panel metric" style="--accent:#3fe0a3"><div class="metric-head">Humidity <b class="metric-icon">◌</b></div><div class="metric-value" id="h">—<span class="unit">%</span></div><div class="metric-foot">Field 8 · Last valid DHT11 reading · <span id="hStamp">—</span></div></div>
+</section>
+
+<div class="section"><h3>PV power flow</h3><span>Live electrical monitoring</span></div>
+<section class="panel scada">
+ <div class="scada-head"><h4>Solar DC power flow</h4><small>Live measurements from ThingSpeak</small></div>
+ <div class="flow">
+  <div class="node"><div class="node-icon">☀️</div><strong>SOLAR PV</strong><small>DC source · 40 W panel</small><div class="reading" id="flowV">— V</div></div>
+  <div class="arrow">➜</div>
+  <div class="node"><div class="node-icon">▣</div><strong>INA219</strong><small>DC voltage / current monitor</small><div class="reading" id="flowI">— A</div></div>
+  <div class="arrow">➜</div>
+  <div class="node"><div class="node-icon">ϟ</div><strong>DC LOAD</strong><small>Measured electrical output</small><div class="reading" id="flowP">— W</div></div>
+ </div>
+ <div class="branch">
+  <div class="branch-node"><div class="node-icon">📶</div><div><strong>DATA ACQUISITION</strong><small><span class="good">●</span> <span id="measureState">Awaiting sensor data</span> · <span id="wifiState">ThingSpeak connection</span></small></div></div>
+  <div class="branch-node"><div class="node-icon">☼</div><div><strong>LIGHT INTENSITY</strong><small><span class="reading" id="flowLight">— lux</span></small></div></div>
+ </div>
+ <div class="note">The diagram represents the measured PV–INA219–DC load path. Inverter and battery telemetry are not displayed because dedicated measurement channels are not currently configured.</div>
+</section>
+
+<div class="section"><h3>Live ThingSpeak charts</h3><span>Embedded channel charts · ThingSpeak controls update independently</span></div>
+<section class="chart-grid">
+ <article class="panel embed-card"><div class="embed-title"><h4>01 · Panel voltage</h4><span>Field 1</span></div><iframe class="embed-frame" loading="lazy" title="Panel voltage chart" src="https://thingspeak.com/channels/3500819/charts/1?bgcolor=%230b1726&color=%2355c9f2&dynamic=true&results=60&type=line&update=15"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>02 · Charging current</h4><span>Field 2</span></div><iframe class="embed-frame" loading="lazy" title="Current chart" src="https://thingspeak.com/channels/3500819/charts/2?bgcolor=%230b1726&color=%233fe0a3&dynamic=true&results=60&type=line&update=15"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>03 · Energy</h4><span>Field 3</span></div><iframe class="embed-frame" loading="lazy" title="Energy chart" src="https://thingspeak.com/channels/3500819/charts/3?bgcolor=%230b1726&color=%23ae9bff&dynamic=true&results=60&type=line&update=15"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>04 · Solar power</h4><span>Field 4</span></div><iframe class="embed-frame" loading="lazy" title="Power chart" src="https://thingspeak.com/channels/3500819/charts/4?bgcolor=%230b1726&color=%23f5c45e&dynamic=true&results=60&type=line&update=15"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>05 · Solar panel temperature</h4><span>Field 5</span></div><iframe class="embed-frame" loading="lazy" title="Solar panel temperature chart" src="https://thingspeak.com/channels/3500819/charts/5?bgcolor=%230b1726&color=%23ff9c73&dynamic=true&results=60&type=line&update=15"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>06 · Atmospheric temperature</h4><span>Field 6</span></div><iframe class="embed-frame" loading="lazy" title="Atmospheric temperature chart" src="https://thingspeak.com/channels/3500819/charts/6?bgcolor=%230b1726&color=%2355c9f2&dynamic=true&results=60&type=line&update=15"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>07 · Light intensity</h4><span>Field 7</span></div><iframe class="embed-frame" loading="lazy" title="Light intensity chart" src="https://thingspeak.com/channels/3500819/charts/7?bgcolor=%230b1726&color=%23f5c45e&dynamic=true&results=60&type=line&update=15"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>08 · Humidity</h4><span>Field 8</span></div><iframe class="embed-frame" loading="lazy" title="Humidity chart" src="https://thingspeak.com/channels/3500819/charts/8?bgcolor=%230b1726&color=%233fe0a3&dynamic=true&results=60&type=line&update=15"></iframe></article>
+</section>
+
+<div class="section"><h3>Instrument panels & MATLAB analytics</h3><span>Embedded from your ThingSpeak widgets and MATLAB Visualizations</span></div>
+<section class="chart-grid">
+ <article class="panel embed-card"><div class="embed-title"><h4>Voltage gauge</h4><span>ThingSpeak widget · 1325164</span></div><iframe class="embed-frame widget-frame" loading="lazy" title="Voltage gauge widget" src="https://thingspeak.com/channels/3500819/widgets/1325164"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>Panel heat indicator</h4><span>ThingSpeak widget · 1325165</span></div><iframe class="embed-frame widget-frame" loading="lazy" title="Panel heat widget" src="https://thingspeak.com/channels/3500819/widgets/1325165"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>Solar panel generated output voltage</h4><span>MATLAB Visualization · 687153</span></div><iframe class="embed-frame matlab-frame" loading="lazy" title="Solar panel output voltage visualization" src="https://thingspeak.com/apps/matlab_visualizations/687153"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>Solar light irradiance analysis</h4><span>MATLAB Visualization · 687155</span></div><iframe class="embed-frame matlab-frame" loading="lazy" title="Solar light irradiance visualization" src="https://thingspeak.com/apps/matlab_visualizations/687155"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>Actual vs predicted voltage</h4><span>MATLAB Visualization · 687177</span></div><iframe class="embed-frame matlab-frame" loading="lazy" title="Actual versus predicted graph" src="https://thingspeak.com/apps/matlab_visualizations/687177"></iframe></article>
+ <article class="panel embed-card"><div class="embed-title"><h4>Additional AI / MATLAB analysis</h4><span>MATLAB Visualization · 687178</span></div><iframe class="embed-frame matlab-frame" loading="lazy" title="Additional MATLAB visualization" src="https://thingspeak.com/apps/matlab_visualizations/687178"></iframe></article>
+</section>
+
+<div class="section"><h3>Measurement information</h3><span>For accurate project demonstration</span></div>
+<section class="panel scada">
+ <div class="statusline"><b>Measurement source</b><span class="good">Public ThingSpeak channel 3500819</span></div>
+ <div class="statusline" style="margin-top:10px"><b>PV voltage measurement</b><span class="muted">Field 1 · DC panel terminal voltage</span></div>
+ <div class="statusline" style="margin-top:10px"><b>AI status</b><span class="warn">Experimental prediction / anomaly screening</span></div>
+ <p class="note">AI prediction errors and anomalies are indicators for investigation, not confirmed panel faults or a validated percentage-degradation measurement. PV terminal voltage changes with irradiance, panel temperature, battery state of charge, charge-controller operation and connected load. Lux is not the same as calibrated irradiance in W/m². The controller, battery and inverter values are not independently measured by the fields listed above.</p>
+</section>
+<footer class="footer"><span>Solar Panel AI Health Monitoring System · Yeshwantrao Chavan College of Engineering, Nagpur</span><span>Data source: <a href="https://thingspeak.mathworks.com/channels/3500819" target="_blank" rel="noopener">ThingSpeak Channel 3500819</a> · <span id="pageUpdated">Page not refreshed</span></span></footer>
+</div>
+<script>
+const CHANNEL="3500819",LIMIT=8000;
+const $=id=>document.getElementById(id);
+const n=x=>x===null||x===undefined||x===""?null:(Number.isFinite(Number(x))?Number(x):null);
+const f=(x,d=2)=>x===null?"—":x.toLocaleString("en-IN",{maximumFractionDigits:d});
+function put(id,val,unit,d=2){$(id).innerHTML=f(val,d)+'<span class="unit">'+unit+'</span>'}
+function validTemperature(x){return x!==null && x>=1 && x<=60}
+function validHumidity(x){return x!==null && x>=1 && x<=100}
+function lastValid(feeds,field,validator){
+ for(let k=feeds.length-1;k>=0;k--){
+  const value=n(feeds[k][field]);
+  if(validator(value)) return {value,time:new Date(feeds[k].created_at)};
+ }
+ return {value:null,time:null};
+}
+function stamp(t){return t?t.toLocaleString():"No valid reading found"}
+async function refresh(){
+ $("dataMessage").textContent="Requesting latest measurements from ThingSpeak…";
+ try{
+  const r=await fetch(`https://api.thingspeak.com/channels/${CHANNEL}/feeds.json?results=${LIMIT}`,{cache:"no-store"});
+  if(!r.ok)throw new Error("HTTP "+r.status);
+  const j=await r.json(),feeds=j.feeds||[];
+  if(!feeds.length)throw new Error("No records returned. Check channel public access.");
+  const q=feeds[feeds.length-1],dt=new Date(q.created_at),age=(Date.now()-dt.getTime())/60000,live=age<=10;
+  const temp=lastValid(feeds,"field6",validTemperature);
+  const hum=lastValid(feeds,"field8",validHumidity);
+  put("v",n(q.field1),"V DC",3);put("i",n(q.field2),"A",3);put("p",n(q.field4),"W",3);
+  put("e",n(q.field3),"",4);put("l",n(q.field7),"lux",0);put("st",n(q.field5),"°C",1);
+  put("at",temp.value,"°C",1);put("h",hum.value,"%",1);
+  $("atStamp").textContent=stamp(temp.time);$("hStamp").textContent=stamp(hum.time);
+  $("flowV").textContent=f(n(q.field1),3)+" V";
+  $("flowI").textContent=f(n(q.field2),3)+" A";
+  $("flowP").textContent=f(n(q.field4),3)+" W";
+  $("flowLight").textContent=f(n(q.field7),0)+" lux";
+  $("measureState").textContent=live?"ACTIVE":"LATEST DATA IS OLD";
+  $("wifiState").textContent="ThingSpeak synced";
+  $("lastUpdate").textContent=dt.toLocaleString();$("recordCount").textContent=feeds.length;
+  $("connection").textContent=live?"LIVE DATA":"STALE DATA";
+  $("linkStatus").textContent=live?"CONNECTED":"LAST UPDATE OLD";
+  $("linkStatus").className=live?"good":"warn";
+  $("led").style.background=live?"var(--green)":"var(--amber)";
+  const ta=temp.time?(Date.now()-temp.time.getTime())/60000:null;
+  const ha=hum.time?(Date.now()-hum.time.getTime())/60000:null;
+  $("dataMessage").textContent=`Latest channel update: ${f(age,1)} min ago. DHT11 temperature last valid: ${ta===null?"not available":f(ta,0)+" min ago"}; humidity: ${ha===null?"not available":f(ha,0)+" min ago"}.`;
+  $("pageUpdated").textContent="Web page refreshed "+new Date().toLocaleTimeString();
+ }catch(e){
+  $("connection").textContent="CONNECTION ERROR";$("linkStatus").textContent="OFFLINE";
+  $("linkStatus").className="bad";$("led").style.background="var(--red)";
+  $("dataMessage").textContent=e.message;
+ }
+}
+$("refresh").addEventListener("click",refresh);refresh();setInterval(refresh,60000);
+</script>
+</body>
+</html>
